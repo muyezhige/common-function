@@ -359,3 +359,27 @@ function cookie(key, value, options) {
 }
 // 调用 让token 过期。
 cookie('token','' ,{ expires : -1, domain : '.huajiao.com'});
+
+// localStorage存储获取
+var Cach = {
+    save: function(key, value){
+        if(typeof value === "object"){
+            value = JSON.stringify(value);
+        }
+        localStorage.setItem(key, value);
+    },
+    get: function(key){
+        var val = localStorage.getItem(key) || "";
+        var str;
+        if(val){
+            try{
+                str = JSON.parse(val);
+            }catch(e){
+                str = val;
+            }
+        }else{
+            str = val;
+        }
+        return str;
+    }
+};
