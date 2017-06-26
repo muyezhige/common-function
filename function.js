@@ -91,11 +91,33 @@ function formateTime(s) {
     return t;
 }
 
-//返回当前日期对应的月日
-function getNowYMD(){
-    var dt = this.getNow();
+//时间戳(时长)，格式化几时几分几秒
+function getDuration(ms){
+    var aminute = 60,
+        ahour   = aminute*60,
+        aday   = ahour*24;
 
-    return [dt.getFullYear(), (dt.getMonth()+1), dt.getDate()];
+    // 毫秒转秒
+    var sec = parseInt(ms/1000);
+    // 秒转天数
+    var day = parseInt(sec/aday);
+    // 不到1天剩下的秒数
+    sec = sec%aday;
+    // 剩下的秒数转小时
+    var hour = parseInt(sec/ahour);
+    // 不到1小时剩下的秒数
+    sec = sec%ahour;
+    // 剩下的秒数转分钟
+    var minute = parseInt(sec/aminute);
+    // 不到1分钟剩下秒
+    sec = sec%aminute;
+    
+    return {
+        day: day,
+        hour: hour,
+        minute: minute,
+        sec: sec
+    };
 }
 
 //返回当前日期对应的星期
