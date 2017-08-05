@@ -385,6 +385,7 @@ cookie('token','' ,{ expires : -1, domain : '.huajiao.com'});
 // localStorage存储获取
 var Cach = {
     save: function(key, value){
+        // 属性值，可能是对象。
         if(typeof value === "object"){
             value = JSON.stringify(value);
         }
@@ -405,3 +406,79 @@ var Cach = {
         return str;
     }
 };
+
+/*
+*  对带有图片的字符串进行截断，超出部分后跟省略号。
+*  total 中文字符 +2  英文或数字 +1
+*  return {newString}
+*/
+function cutImgString (str, total) {
+    var reg = new RegExp('(<img(.*?)>)','g');
+    var chinaReg = /[\u4e00-\u9fa5]/g;
+    var stamp = "{img}";
+    var num = 0;
+    var newString = '';
+    var imgItem = str.match(reg);
+
+    str = str.replace(reg, stamp);
+    var strArray = str.split(stamp);
+
+    // 总长度
+    var totalNum = 0;
+    if (imgItem) {
+        totalNum += (imgItem.length*2);
+    }
+    var totalStr = str.replace(reg, "");
+    for (var i = 0; i < totalStr.length; i++) {
+        var item = totalStr[i];
+        if(item.charCodeAt(0) > 255){
+            totalNum += 2;
+        }else{
+            totalNum ++;
+        }
+    }
+
+    for (var i = 0; i < strArray.length; i++) {
+        if (num >= total) {
+            break;
+        }
+        var len = strArray[i].length;
+        if (!len) {
+            var firstImg = imgItem && imgItem.shift();
+            if (firstImg) {
+                newString += firstImg;
+                num += 2;
+            }
+            continue;
+        }
+        for (var j = 0; j < len; j++) {
+            var item = strArray[i][j];
+            if (num >= total) {
+                break;
+            }
+            newString += item;
+
+            if(item.charCodeAt(0) > 255){
+                num += 2;
+            }else{
+                num ++;
+            }
+
+            if (num >= total) {
+                break;
+            }
+            
+            if (j == (len-1)) {
+                var firstImg = imgItem && imgItem.shift();
+                if (firstImg) {
+                    newString += firstImg;
+                    num += 2;
+                }
+            }
+        }
+    }
+    if (num < totalNum) {
+        newString += "…";
+    }
+    return newString;
+}
