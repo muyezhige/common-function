@@ -79,6 +79,37 @@ function getDuration(ms){
     };
 }
 
+/*
+* 根据上面的getDuration函数，换算成粉丝时长
+*/
+function getdurationValue (ms) {
+    var times = getDuration(ms),
+    minute = times.minute,
+    hour = times.hour,
+    day = times.day;
+
+    var score = "";
+    if (day) {
+        score = day + "天";
+        if (hour) {
+            score = day + "天" + hour + "小时";
+        }
+        if (day >= 2) {
+             score = day + "天";
+        }
+    }else if(hour){
+        score = hour + "小时";
+        if (minute) {
+           score = hour + "小时" + minute + "分钟"; 
+        }
+    }else if (minute){
+        score = minute + "分钟";
+    }else {
+        score = "1分钟";
+    }
+    return score;
+}
+
 //返回当前日期对应的星期
 function getNowWeek(w2txt){
     var dt = this.getNow(),
