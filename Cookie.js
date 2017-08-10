@@ -1,4 +1,6 @@
-// 设置cookie
+/*
+* 设置cookie
+*/
 function cookie(key, value, options) {
     var days, time, result, decode;
     if (arguments.length > 1 && String(value) !== "[object Object]") {
@@ -32,3 +34,11 @@ function cookie(key, value, options) {
 }
 // 调用 让token 过期。
 cookie('token','' ,{ expires : -1, domain : '.huajiao.com'});
+
+/*
+* 获取cookie值
+*/
+var getCookie = function(c_name){
+    var m = document.cookie.match(new RegExp( "(^| )"+ c_name +"=([^;]*)(;|$)"));
+    return !m ? "":unescape(m[2]);
+};
