@@ -161,3 +161,32 @@ function isRunYear(y){
     }
     return 0;
 }
+
+// 判断现在时间，是否属于今日的某一个时间段内
+var time_range = function (beginTime, endTime, nowTime) {
+    var begin = beginTime.split(":");
+    var end   = endTime.split(":");
+    var now   = new Date();
+
+    if (begin.length != 2 || end.length != 2) {
+     	console.log("格式有误");
+     	return false;
+    }
+
+    var b = new Date ();
+    var e = new Date ();
+ 
+    b.setHours(begin[0]);
+    b.setMinutes(begin[1]);
+
+    e.setHours(end[0]);
+    e.setMinutes(end[1]);
+
+    if (now.getTime() - b.getTime() > 0 && now.getTime() - e.getTime() < 0) {
+    	alert("属于该时间范围内~");
+    } else {
+    	alert ("当前时间是：" + now.getHours() + ":" + now.getMinutes() + "，不在该时间范围内！");
+    	return false;
+    }
+ }
+ time_range("18:00", "18:10");
